@@ -81,6 +81,10 @@ const Contact = () => {
       return "Message must be at least 10 characters.";
     }
 
+    if (message.length > 2000) {
+      return "Message cannot exceed 2000 characters.";
+    }
+
     return "";
   };
 
@@ -354,7 +358,7 @@ const Contact = () => {
                       onChange={handleChange}
                       placeholder="Enter your name"
                       autoComplete="name"
-                      maxLength={80}
+                      maxLength={100}
                       disabled={loading}
                       className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:ring-2 focus:ring-slate-950/10 disabled:cursor-not-allowed disabled:bg-slate-50"
                     />
@@ -377,7 +381,7 @@ const Contact = () => {
                       onChange={handleChange}
                       placeholder="you@example.com"
                       autoComplete="email"
-                      maxLength={120}
+                      maxLength={150}
                       disabled={loading}
                       className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:ring-2 focus:ring-slate-950/10 disabled:cursor-not-allowed disabled:bg-slate-50"
                     />
@@ -401,7 +405,7 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="How can we help?"
                     autoComplete="off"
-                    maxLength={150}
+                    maxLength={200}
                     disabled={loading}
                     className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:ring-2 focus:ring-slate-950/10 disabled:cursor-not-allowed disabled:bg-slate-50"
                   />
@@ -418,7 +422,7 @@ const Contact = () => {
                     </label>
 
                     <span className="text-xs text-slate-400">
-                      {formData.message.length}/1000
+                      {formData.message.length}/2000
                     </span>
                   </div>
 
@@ -429,7 +433,7 @@ const Contact = () => {
                     onChange={handleChange}
                     placeholder="Write your message here..."
                     rows={6}
-                    maxLength={1000}
+                    maxLength={2000}
                     disabled={loading}
                     className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-950 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-slate-400 focus:ring-2 focus:ring-slate-950/10 disabled:cursor-not-allowed disabled:bg-slate-50"
                   />

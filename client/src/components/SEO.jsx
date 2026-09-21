@@ -11,7 +11,10 @@ const SEO = ({
 
       <meta name="description" content={description} />
 
-      {noindex && <meta name="robots" content="noindex, nofollow" />}
+      <meta
+        name="robots"
+        content={noindex ? "noindex, nofollow" : "index, follow"}
+      />
     </Helmet>
   );
 };

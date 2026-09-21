@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
+  FiArrowRight,
   FiBook,
   FiClock,
   FiDollarSign,
+  FiMail,
   FiRefreshCw,
   FiShoppingBag,
   FiUsers,
@@ -21,6 +24,7 @@ const INITIAL_STATS = {
   totalOrders: 0,
   totalRevenue: 0,
   pendingOrders: 0,
+  newMessages: 0,
 };
 
 const AdminDashboard = () => {
@@ -99,6 +103,8 @@ const AdminDashboard = () => {
     },
   ];
 
+  const newMessages = Number(stats.newMessages || 0);
+
   if (loading) {
     return <Loader text="Loading dashboard..." />;
   }
@@ -107,7 +113,7 @@ const AdminDashboard = () => {
     <div className="space-y-6 sm:space-y-8">
       <SEO
         title="Admin Dashboard | BookStore"
-        description="Manage and monitor BookStore users, books, orders, revenue, and store activity from the admin dashboard."
+        description="Manage and monitor BookStore users, books, orders, revenue, messages, and store activity from the admin dashboard."
         noindex
       />
 
@@ -128,7 +134,8 @@ const AdminDashboard = () => {
           </h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-            Monitor your bookstore performance, customers, orders, and revenue.
+            Monitor your bookstore performance, customers, orders, revenue, and
+            messages.
           </p>
         </div>
 
@@ -198,11 +205,63 @@ const AdminDashboard = () => {
         })}
       </div>
 
+      {/* Messages */}
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, delay: 0.24 }}
+        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+      >
+        <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+              <FiMail size={21} className="text-slate-700" aria-hidden="true" />
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-slate-950">
+                New Messages
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                Customer contact messages waiting for review.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <div className="flex items-center justify-between gap-4 sm:justify-end">
+              <span className="text-xs font-medium uppercase tracking-wider text-slate-400">
+                Awaiting review
+              </span>
+
+              <span
+                className={`inline-flex min-w-12 items-center justify-center rounded-full px-3 py-1.5 text-sm font-bold ${
+                  newMessages > 0
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-emerald-100 text-emerald-700"
+                }`}
+              >
+                {newMessages.toLocaleString()}
+              </span>
+            </div>
+
+            <Link
+              to="/admin/messages"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-slate-950/10"
+            >
+              View Messages
+              <FiArrowRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </motion.section>
+
       {/* Pending Orders */}
       <motion.section
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, delay: 0.25 }}
+        transition={{ duration: 0.45, delay: 0.3 }}
         className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
       >
         <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">

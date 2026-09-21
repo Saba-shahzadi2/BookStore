@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminProtectedRoute from "./components/admin/AdminProtectedRoute";
 import AdminLayout from "./components/admin/AdminLayout";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -13,7 +14,6 @@ import Terms from "./pages/Terms";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { WishlistProvider } from "./context/WishlistContext";
-import ScrollToTop from "./components/common/ScrollToTop";
 
 // Public pages
 import Home from "./pages/Home";
@@ -41,6 +41,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminBooks from "./pages/admin/AdminBooks";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminMessages from "./pages/admin/AdminMessages";
 import AdminProfile from "./pages/admin/AdminProfile";
 
 /* =========================================
@@ -50,7 +51,6 @@ import AdminProfile from "./pages/admin/AdminProfile";
 const CustomerLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
-      <ScrollToTop />
       <Navbar />
 
       <main className="flex-1">
@@ -69,6 +69,9 @@ const CustomerLayout = () => {
 const App = () => {
   return (
     <BrowserRouter>
+      {/* Global Scroll To Top */}
+      <ScrollToTop />
+
       {/* Global Toast Notifications */}
       <Toaster
         position="top-right"
@@ -152,6 +155,8 @@ const App = () => {
                   <Route path="orders" element={<AdminOrders />} />
 
                   <Route path="users" element={<AdminUsers />} />
+
+                  <Route path="messages" element={<AdminMessages />} />
 
                   <Route path="profile" element={<AdminProfile />} />
                 </Route>

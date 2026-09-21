@@ -5,6 +5,7 @@ import {
   FiBook,
   FiGrid,
   FiLogOut,
+  FiMail,
   FiShoppingBag,
   FiUser,
   FiUsers,
@@ -40,6 +41,11 @@ const AdminSidebar = ({ onClose }) => {
       label: "Users",
       path: "/admin/users",
       icon: FiUsers,
+    },
+    {
+      label: "Messages",
+      path: "/admin/messages",
+      icon: FiMail,
     },
     {
       label: "Profile",

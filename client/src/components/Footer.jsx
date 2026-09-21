@@ -35,11 +35,48 @@ const Footer = () => {
     },
   ];
 
+  const quickLinks = [
+    {
+      label: "Home",
+      to: "/",
+    },
+    {
+      label: "Books",
+      to: "/books",
+    },
+    {
+      label: "About Us",
+      to: "/about",
+    },
+    {
+      label: "Contact",
+      to: "/contact",
+    },
+  ];
+
+  const customerLinks = [
+    {
+      label: "My Account",
+      to: "/profile",
+    },
+    {
+      label: "Wishlist",
+      to: "/wishlist",
+    },
+    {
+      label: "Shopping Cart",
+      to: "/cart",
+    },
+  ];
+
   return (
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-14 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
+          {/* =========================================
+              BRAND
+          ========================================= */}
+
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -71,7 +108,11 @@ const Footer = () => {
             </p>
 
             {/* Social Links */}
-            <div className="mt-6 flex items-center gap-2.5">
+
+            <div
+              className="mt-6 flex items-center gap-2.5"
+              aria-label="Social media links"
+            >
               {socialLinks.map((social) => {
                 const Icon = social.icon;
 
@@ -94,7 +135,8 @@ const Footer = () => {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={social.label}
+                    aria-label={`Visit BookStore on ${social.label}`}
+                    title={social.label}
                     className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 transition-all duration-200 hover:border-slate-950 hover:bg-slate-950 hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-950/10"
                   >
                     <Icon size={17} aria-hidden="true" />
@@ -104,119 +146,104 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* =========================================
+              QUICK LINKS
+          ========================================= */}
+
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: 0.05 }}
+            transition={{
+              duration: 0.4,
+              delay: 0.05,
+            }}
           >
             <h3 className="text-sm font-bold text-slate-950">Quick Links</h3>
 
             <ul className="mt-4 space-y-3">
-              <li>
-                <Link
-                  to="/"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  Home
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/books"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  Books
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/about"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  About Us
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  Contact
-                </Link>
-              </li>
+              {quickLinks.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="rounded-md text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
-          {/* Customer */}
+          {/* =========================================
+              CUSTOMER
+          ========================================= */}
+
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.4, delay: 0.1 }}
+            transition={{
+              duration: 0.4,
+              delay: 0.1,
+            }}
           >
             <h3 className="text-sm font-bold text-slate-950">Customer</h3>
 
             <ul className="mt-4 space-y-3">
-              <li>
-                <Link
-                  to="/profile"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  My Account
-                </Link>
-              </li>
+              {customerLinks.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="rounded-md text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+
+              {/* Support */}
 
               <li>
                 <Link
-                  to="/wishlist"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  Wishlist
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/cart"
-                  className="text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
-                >
-                  Shopping Cart
-                </Link>
-              </li>
-
-              <li>
-                <a
-                  href="mailto:support@bookstore.com"
-                  className="inline-flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+                  to="/contact"
+                  className="inline-flex items-center gap-2 rounded-md text-sm text-slate-500 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
                 >
                   <FiMail size={15} aria-hidden="true" />
                   Support
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.div>
         </div>
 
-        {/* Bottom */}
+        {/* =========================================
+            BOTTOM
+        ========================================= */}
+
         <div className="mt-12 flex flex-col gap-4 border-t border-slate-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-slate-500">
             © {currentYear} BookStore. All rights reserved.
           </p>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-2">
-            <span className="cursor-default text-sm text-slate-400 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
-              <Link to="/privacy">Privacy Policy</Link>
-            </span>
+          <nav
+            aria-label="Legal navigation"
+            className="flex flex-wrap gap-x-5 gap-y-2"
+          >
+            <Link
+              to="/privacy"
+              className="rounded-md text-sm text-slate-400 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+            >
+              Privacy Policy
+            </Link>
 
-            <span className="cursor-default text-sm text-slate-400 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20">
-              <Link to="/terms">Terms &amp; Conditions</Link>
-            </span>
-          </div>
+            <Link
+              to="/terms"
+              className="rounded-md text-sm text-slate-400 transition hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
+            >
+              Terms &amp; Conditions
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

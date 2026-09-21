@@ -68,8 +68,8 @@ const Books = () => {
   return (
     <main className="min-h-screen bg-slate-50">
       <SEO
-        title="Browse Books | BookStore"
-        description="Browse our collection of books, discover new authors, and find your next great read at BookStore."
+        title="Books Collection | Browse & Shop Books | BookStore"
+        description="Browse and shop books online at BookStore. Search by title or author, explore categories, discover new books, and find your next great read."
       />
 
       {/* Page Header */}

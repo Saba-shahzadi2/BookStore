@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const contactSchema = new mongoose.Schema(
   {
+    // ========================================================
+    // Contact Information
+    // ========================================================
+
     name: {
       type: String,
       required: [true, "Name is required"],
@@ -35,16 +39,41 @@ const contactSchema = new mongoose.Schema(
       maxlength: [2000, "Message cannot exceed 2000 characters"],
     },
 
+    // ========================================================
+    // Message Status
+    // ========================================================
+
     status: {
       type: String,
       enum: ["new", "read", "replied"],
       default: "new",
+      index: true,
     },
   },
   {
     timestamps: true,
   },
 );
+
+// ============================================================
+// Indexes
+// ============================================================
+
+// Admin messages page:
+// Quickly find/filter messages by status and newest first.
+contactSchema.index({
+  status: 1,
+  createdAt: -1,
+});
+
+// General newest-first message queries.
+contactSchema.index({
+  createdAt: -1,
+});
+
+// ============================================================
+// Model
+// ============================================================
 
 const Contact = mongoose.model("Contact", contactSchema);
 

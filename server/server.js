@@ -15,6 +15,7 @@ import wishlistRoutes from "./routes/wishlistRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import adminContactRoutes from "./routes/adminContactRoutes.js";
 
 import { apiLimiter } from "./middleware/rateLimitMiddleware.js";
 
@@ -81,6 +82,7 @@ app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/orders", orderRoutes);
 
 app.use("/api/admin", adminRoutes);
+app.use("/api/admin/messages", adminContactRoutes);
 
 app.use("/api/contact", contactRoutes);
 

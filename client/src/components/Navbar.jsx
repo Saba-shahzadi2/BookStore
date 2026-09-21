@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -11,6 +11,8 @@ import {
   FiHeart,
   FiGrid,
   FiPackage,
+  FiMail,
+  FiInfo,
 } from "react-icons/fi";
 
 import { useAuth } from "../context/useAuth";
@@ -26,6 +28,46 @@ const Navbar = () => {
 
   const isAdmin = isAuthenticated && user?.role === "admin";
 
+  /* =========================================
+     CLOSE MOBILE MENU ON ESCAPE
+  ========================================= */
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [mobileMenuOpen]);
+
+  /* =========================================
+     LOCK BODY SCROLL WHEN MOBILE MENU IS OPEN
+  ========================================= */
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const originalOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [mobileMenuOpen]);
+
+  /* =========================================
+     LOGOUT
+  ========================================= */
+
   const handleLogout = () => {
     logout();
     setMobileMenuOpen(false);
@@ -35,9 +77,21 @@ const Navbar = () => {
     });
   };
 
+  /* =========================================
+     MOBILE MENU
+  ========================================= */
+
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => !prev);
+  };
+
+  /* =========================================
+     NAVIGATION CLASSES
+  ========================================= */
 
   const desktopNavLinkClass = ({ isActive }) =>
     `relative inline-flex items-center py-2 text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-amber-500/20 ${
@@ -57,7 +111,10 @@ const Navbar = () => {
         className="mx-auto flex min-h-16 max-w-7xl items-center justify-between px-4 sm:min-h-[4.5rem] sm:px-6 lg:px-8"
         aria-label="Main navigation"
       >
-        {/* Logo */}
+        {/* =========================================
+            LOGO
+        ========================================= */}
+
         <Link
           to="/"
           onClick={closeMobileMenu}
@@ -77,9 +134,14 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* =========================================
+            DESKTOP NAVIGATION
+        ========================================= */}
+
         <div className="hidden items-center gap-7 md:flex lg:gap-8">
-          <NavLink to="/" className={desktopNavLinkClass}>
+          {/* Home */}
+
+          <NavLink to="/" end className={desktopNavLinkClass}>
             {({ isActive }) => (
               <>
                 Home
@@ -97,6 +159,7 @@ const Navbar = () => {
               </>
             )}
           </NavLink>
+          {/* Books */}
 
           {!isAdmin && (
             <NavLink to="/books" className={desktopNavLinkClass}>
@@ -119,8 +182,53 @@ const Navbar = () => {
             </NavLink>
           )}
 
+          {/* Contact */}
+
+          <NavLink to="/contact" className={desktopNavLinkClass}>
+            {({ isActive }) => (
+              <>
+                Contact
+                {isActive && (
+                  <motion.span
+                    layoutId="desktop-nav-indicator"
+                    className="absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-amber-500"
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 35,
+                    }}
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
+          {/* About Us */}
+          <NavLink to="/about" className={desktopNavLinkClass}>
+            {({ isActive }) => (
+              <>
+                About Us
+                {isActive && (
+                  <motion.span
+                    layoutId="desktop-nav-indicator"
+                    className="absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-amber-500"
+                    transition={{
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 35,
+                    }}
+                  />
+                )}
+              </>
+            )}
+          </NavLink>
+          {/* Books */}
+
+          {/* Customer Navigation */}
+
           {isAuthenticated && !isAdmin && (
             <>
+              {/* Orders */}
+
               <NavLink to="/orders" className={desktopNavLinkClass}>
                 {({ isActive }) => (
                   <>
@@ -139,6 +247,8 @@ const Navbar = () => {
                   </>
                 )}
               </NavLink>
+
+              {/* Wishlist */}
 
               <NavLink to="/wishlist" className={desktopNavLinkClass}>
                 {({ isActive }) => (
@@ -161,8 +271,10 @@ const Navbar = () => {
             </>
           )}
 
+          {/* Admin Navigation */}
+
           {isAdmin && (
-            <NavLink to="/admin" className={desktopNavLinkClass}>
+            <NavLink to="/admin" end className={desktopNavLinkClass}>
               {({ isActive }) => (
                 <>
                   Admin Dashboard
@@ -183,9 +295,13 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Right Side */}
+        {/* =========================================
+            RIGHT SIDE
+        ========================================= */}
+
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Cart */}
+
           {!isAdmin && (
             <Link
               to="/cart"
@@ -203,6 +319,7 @@ const Navbar = () => {
                   initial={{ scale: 0.7 }}
                   animate={{ scale: 1 }}
                   className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-slate-950 ring-2 ring-white"
+                  aria-hidden="true"
                 >
                   {cartCount > 99 ? "99+" : cartCount}
                 </motion.span>
@@ -210,19 +327,27 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/* Desktop Authentication */}
+          {/* =========================================
+              DESKTOP AUTHENTICATION
+          ========================================= */}
+
           <div className="hidden items-center gap-2.5 md:flex">
             {isAuthenticated ? (
               <>
+                {/* Admin Dashboard */}
+
                 {isAdmin ? (
                   <Link
                     to="/admin"
                     className="flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-950/20"
                   >
                     <FiGrid size={17} aria-hidden="true" />
+
                     <span>Dashboard</span>
                   </Link>
                 ) : (
+                  /* Customer Profile */
+
                   <Link
                     to="/profile"
                     className="flex max-w-44 items-center gap-2 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-amber-500/20"
@@ -238,24 +363,32 @@ const Navbar = () => {
                   </Link>
                 )}
 
+                {/* Logout */}
+
                 <button
                   type="button"
                   onClick={handleLogout}
                   className="flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-slate-950/10"
                 >
                   <FiLogOut size={17} aria-hidden="true" />
+
                   <span>Logout</span>
                 </button>
               </>
             ) : (
               <>
+                {/* Login */}
+
                 <Link
                   to="/login"
                   className="flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition-all duration-200 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-slate-950/10"
                 >
                   <FiUser size={17} aria-hidden="true" />
+
                   <span>Login</span>
                 </Link>
+
+                {/* Register */}
 
                 <Link
                   to="/register"
@@ -267,21 +400,38 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* =========================================
+              MOBILE MENU BUTTON
+          ========================================= */}
+
           <button
             type="button"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            onClick={toggleMobileMenu}
             className="rounded-xl p-2.5 text-slate-700 transition-colors hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500/20 md:hidden"
-            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-label={
+              mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
+            }
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation"
           >
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={mobileMenuOpen ? "close" : "menu"}
-                initial={{ opacity: 0, rotate: -45, scale: 0.8 }}
-                animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                exit={{ opacity: 0, rotate: 45, scale: 0.8 }}
+                initial={{
+                  opacity: 0,
+                  rotate: -45,
+                  scale: 0.8,
+                }}
+                animate={{
+                  opacity: 1,
+                  rotate: 0,
+                  scale: 1,
+                }}
+                exit={{
+                  opacity: 0,
+                  rotate: 45,
+                  scale: 0.8,
+                }}
                 transition={{ duration: 0.15 }}
                 className="flex"
               >
@@ -296,28 +446,51 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation */}
+      {/* =========================================
+          MOBILE NAVIGATION
+      ========================================= */}
+
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             id="mobile-navigation"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{
+              opacity: 0,
+              height: 0,
+            }}
+            animate={{
+              opacity: 1,
+              height: "auto",
+            }}
+            exit={{
+              opacity: 0,
+              height: 0,
+            }}
             transition={{ duration: 0.2 }}
             className="overflow-hidden border-t border-slate-200 bg-white shadow-sm md:hidden"
           >
             <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
+              initial={{
+                opacity: 0,
+                y: -8,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: -8,
+              }}
               transition={{ duration: 0.2 }}
               className="mx-auto max-w-7xl px-4 py-4 sm:px-6"
             >
               <div className="space-y-1">
                 {/* Home */}
+
                 <NavLink
                   to="/"
+                  end
                   onClick={closeMobileMenu}
                   className={mobileNavLinkClass}
                 >
@@ -325,9 +498,10 @@ const Navbar = () => {
                   Home
                 </NavLink>
 
-                {/* Customer Navigation */}
                 {!isAdmin && (
                   <>
+                    {/* Books */}
+
                     <NavLink
                       to="/books"
                       onClick={closeMobileMenu}
@@ -339,6 +513,8 @@ const Navbar = () => {
 
                     {isAuthenticated && (
                       <>
+                        {/* Orders */}
+
                         <NavLink
                           to="/orders"
                           onClick={closeMobileMenu}
@@ -348,6 +524,8 @@ const Navbar = () => {
                           My Orders
                         </NavLink>
 
+                        {/* Wishlist */}
+
                         <NavLink
                           to="/wishlist"
                           onClick={closeMobileMenu}
@@ -356,6 +534,8 @@ const Navbar = () => {
                           <FiHeart size={18} aria-hidden="true" />
                           Wishlist
                         </NavLink>
+
+                        {/* Cart */}
 
                         <NavLink
                           to="/cart"
@@ -367,7 +547,12 @@ const Navbar = () => {
                           <span className="flex flex-1 items-center justify-between">
                             Shopping Cart
                             {cartCount > 0 && (
-                              <span className="flex min-w-6 items-center justify-center rounded-full bg-amber-500 px-2 py-1 text-xs font-bold text-slate-950">
+                              <span
+                                className="flex min-w-6 items-center justify-center rounded-full bg-amber-500 px-2 py-1 text-xs font-bold text-slate-950"
+                                aria-label={`${cartCount} ${
+                                  cartCount === 1 ? "item" : "items"
+                                } in cart`}
+                              >
                                 {cartCount > 99 ? "99+" : cartCount}
                               </span>
                             )}
@@ -378,11 +563,37 @@ const Navbar = () => {
                   </>
                 )}
 
-                {/* Admin Navigation */}
+                {/* Contact */}
+
+                <NavLink
+                  to="/contact"
+                  onClick={closeMobileMenu}
+                  className={mobileNavLinkClass}
+                >
+                  <FiMail size={18} aria-hidden="true" />
+                  Contact
+                </NavLink>
+                {/* About Us */}
+                <NavLink
+                  to="/about"
+                  onClick={closeMobileMenu}
+                  className={mobileNavLinkClass}
+                >
+                  <FiInfo size={18} aria-hidden="true" />
+                  About Us
+                </NavLink>
+
+                {/* Customer Navigation */}
+
+                {/* =========================================
+                    ADMIN NAVIGATION
+                ========================================= */}
+
                 {isAdmin && (
                   <div className="border-t border-slate-200 pt-3">
                     <NavLink
                       to="/admin"
+                      end
                       onClick={closeMobileMenu}
                       className={({ isActive }) =>
                         `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
@@ -399,9 +610,14 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Authenticated User */}
+              {/* =========================================
+                  AUTHENTICATED USER
+              ========================================= */}
+
               {isAuthenticated ? (
                 <div className="mt-4 border-t border-slate-200 pt-4">
+                  {/* Profile */}
+
                   <Link
                     to={isAdmin ? "/admin/profile" : "/profile"}
                     onClick={closeMobileMenu}
@@ -422,25 +638,37 @@ const Navbar = () => {
                     </div>
                   </Link>
 
+                  {/* Logout */}
+
                   <button
                     type="button"
                     onClick={handleLogout}
                     className="mt-1 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-950 focus:outline-none focus:ring-2 focus:ring-slate-950/10"
                   >
                     <FiLogOut size={18} aria-hidden="true" />
+
                     <span>Logout</span>
                   </button>
                 </div>
               ) : (
+                /* =========================================
+                   GUEST AUTHENTICATION
+                ========================================= */
+
                 <div className="mt-4 grid gap-2 border-t border-slate-200 pt-4">
+                  {/* Login */}
+
                   <Link
                     to="/login"
                     onClick={closeMobileMenu}
                     className="flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700 transition-all hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-950/10"
                   >
                     <FiUser size={17} aria-hidden="true" />
+
                     <span>Login</span>
                   </Link>
+
+                  {/* Register */}
 
                   <Link
                     to="/register"
