@@ -66,6 +66,39 @@ Administrators can:
 * Monitor store-related information
 
 ---
+## 📸 Screenshots
+
+### 🏠 Home Page
+
+![BookStore Home Page](docs/screenshots/home.png)
+
+### 📚 Books
+
+![BookStore Books](docs/screenshots/books.png)
+
+### 📖 Book Details
+
+![Book Details](docs/screenshots/book-details.png)
+
+### 🛒 Shopping Cart
+
+![Shopping Cart](docs/screenshots/cart.png)
+
+### 💳 Checkout
+
+![Checkout](docs/screenshots/checkout.png)
+
+### 🔐 Login
+
+![Login](docs/screenshots/login.png)
+
+### 📝 Register
+
+![Register](docs/screenshots/register.png)
+
+### 🛠️ Admin Dashboard
+
+![Admin Dashboard](docs/screenshots/admin-dashboard.png)
 
 ## ✨ Key Features
 
@@ -219,6 +252,9 @@ BookStore/
 │   ├── validators/                # Request validation
 │   ├── server.js                  # Application entry point
 │   └── package.json
+│
+├── docs/                          # Project documentation
+│   └── screenshots/               # Application screenshots
 │
 ├── .gitignore
 ├── BOOKSTORE_REVIEW.md
